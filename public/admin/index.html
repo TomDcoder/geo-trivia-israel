@@ -426,9 +426,12 @@ input::placeholder,textarea::placeholder{color:#8FA0BE;opacity:1}
 </div>
 <h2 style="margin:16px 0 0;font-size:23px;font-weight:900">ניהול התוכן</h2>
 <p style="margin:8px 0 0;font-size:15px;font-weight:500;color:var(--c5);line-height:1.6;text-wrap:pretty">{{ gateNote }}</p>
+<sc-if value="{{ gateMsg }}" hint-placeholder-val="{{ false }}">
+<div style="{{ gateMsgStyle }}">{{ gateMsg }}</div>
+</sc-if>
 <sc-if value="{{ showPassBox }}" hint-placeholder-val="{{ false }}">
 <div style="margin-top:18px;display:flex;flex-direction:column;gap:9px">
-<input type="password" value="{{ passInput }}" onInput="{{ onPassInput }}" onKeyDown="{{ onPassKey }}" placeholder="סיסמת עורך" style="box-sizing:border-box;width:100%;min-height:52px;padding:0 15px;font-size:16px;font-weight:600;color:var(--c6);background:var(--c3);border:none;border-radius:14px;outline:none;text-align:center">
+<input type="password" ref="{{ passRef }}" onKeyDown="{{ onPassKey }}" autoComplete="current-password" placeholder="סיסמת עורך" style="box-sizing:border-box;width:100%;min-height:52px;padding:0 15px;font-size:16px;font-weight:600;color:var(--c6);background:var(--c3);border:2px solid var(--c7);border-radius:14px;outline:none;text-align:center">
 <button onClick="{{ onPassSubmit }}" style="width:100%;min-height:52px;font-size:16px;font-weight:800;color:#fff;background:var(--c1);border:none;border-radius:14px;cursor:pointer">{{ passLabel }}</button>
 </div>
 </sc-if>
@@ -559,14 +562,16 @@ class Component extends DCLogic {
   }
 
   async tryPassword() {
-    const p = (this.state.passInput || "").trim();
-    if (!p) return;
+    const el = this._passRef && this._passRef.current;
+    const p = ((el && el.value) || this.state.passInput || "").trim();
+    if (!p) { this.setState({ msg: "צריך להקליד סיסמה.", msgKind: "warn" }); return; }
     this.setState({ passChecking: true, msg: "" });
     try {
       const r = await fetch(API + "?auth=1", { headers: { "x-admin-password": p }, cache: "no-store" });
       const out = await r.json().catch(() => ({}));
       if (out && out.authOk) {
         try { sessionStorage.setItem("triviaAdminPass", p); } catch (e) {}
+        if (el) el.value = "";
         this.setState({ pass: p, passInput: "", passChecking: false, browseAnyway: false, msg: "" });
       } else if (out && !out.passwordConfigured) {
         this.setState({ passChecking: false, msg: "לא הוגדרה סיסמה בשרת. צריך להוסיף משתנה סביבה בשם ADMIN_PASSWORD ב-Netlify.", msgKind: "warn" });
@@ -620,10 +625,12 @@ class Component extends DCLogic {
       });
       id.on("login", (u) => { this.setState({ user: u || null, browseAnyway: false, msg: "" }); id.close(); });
       id.on("logout", () => this.setState({ user: null }));
-      id.on("error", (err) => this.setState({
-        msg: "שגיאת התחברות: " + ((err && err.message) || "הקישור אולי פג תוקף. בקשו קישור חדש דרך «Forgot password»."),
-        msgKind: "bad"
-      }));
+      id.on("error", (err) => {
+        const text = (err && err.message) || "";
+        // Identity not enabled on this site — hide the email route instead of shouting about it.
+        if (/settings|identity/i.test(text)) { this.setState({ identityReady: false, identityOff: true }); return; }
+        this.setState({ msg: "שגיאת התחברות: " + (text || "הקישור אולי פג תוקף. בקשו קישור חדש דרך «Forgot password»."), msgKind: "bad" });
+      });
       id.init();
     } catch (e) {
       this.setState({ identityReady: false });
@@ -931,9 +938,12 @@ class Component extends DCLogic {
         this.setState({ browseAnyway: false, msg: "ההתחברות זמינה רק באתר החי ב-Netlify.", msgKind: "warn" });
       },
       onBrowse: () => this.setState({ browseAnyway: true }),
-      showGate: !!(!this.authed && !s.browseAnyway && s.source !== "offline" && (s.identityReady || s.passwordConfigured)),
+      showGate: !!(!this.authed && !s.browseAnyway && s.source !== "offline"),
       gateNote: "העריכה שמורה לעורכים מאושרים. אחרי התחברות כל שמירה מתעדכנת במשחק עצמו.",
-      showPassBox: !!s.passwordConfigured,
+      passRef: (this._passRef = this._passRef || React.createRef()),
+      gateMsg: s.msg,
+      gateMsgStyle: "margin-top:16px;padding:12px 14px;border-radius:12px;font-size:14px;font-weight:700;line-height:1.5;text-align:center;background:" + msgTone[0] + ";color:" + msgTone[1],
+      showPassBox: true,
       passInput: s.passInput,
       onPassInput: (e) => this.setState({ passInput: e.target.value }),
       onPassKey: (e) => { if (e.key === "Enter") this.tryPassword(); },
