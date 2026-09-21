@@ -1,2 +1,29 @@
-# Local Netlify folder
-.netlify
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Netlify
+.netlify/
+netlify.toml.local
+
+# Dependencies
+node_modules/
+package-lock.json.bak
+
+# Build output
+dist/
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Local content backups exported from the CMS
+trivia-content-r*.json

@@ -426,7 +426,15 @@ input::placeholder,textarea::placeholder{color:#8FA0BE;opacity:1}
 </div>
 <h2 style="margin:16px 0 0;font-size:23px;font-weight:900">ניהול התוכן</h2>
 <p style="margin:8px 0 0;font-size:15px;font-weight:500;color:var(--c5);line-height:1.6;text-wrap:pretty">{{ gateNote }}</p>
-<button onClick="{{ onAuth }}" style="margin-top:20px;width:100%;min-height:52px;font-size:16px;font-weight:800;color:#fff;background:var(--c1);border:none;border-radius:14px;cursor:pointer">התחברות</button>
+<sc-if value="{{ showPassBox }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:9px">
+<input type="password" value="{{ passInput }}" onInput="{{ onPassInput }}" onKeyDown="{{ onPassKey }}" placeholder="סיסמת עורך" style="box-sizing:border-box;width:100%;min-height:52px;padding:0 15px;font-size:16px;font-weight:600;color:var(--c6);background:var(--c3);border:none;border-radius:14px;outline:none;text-align:center">
+<button onClick="{{ onPassSubmit }}" style="width:100%;min-height:52px;font-size:16px;font-weight:800;color:#fff;background:var(--c1);border:none;border-radius:14px;cursor:pointer">{{ passLabel }}</button>
+</div>
+</sc-if>
+<sc-if value="{{ showIdentityBtn }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ onAuth }}" style="margin-top:10px;width:100%;min-height:52px;font-size:16px;font-weight:800;color:var(--c1);background:var(--c4);border:none;border-radius:14px;cursor:pointer">התחברות עם אימייל</button>
+</sc-if>
 <button onClick="{{ onBrowse }}" style="margin-top:10px;width:100%;min-height:46px;font-size:14px;font-weight:700;color:var(--c5);background:var(--c3);border:none;border-radius:12px;cursor:pointer">לצפייה בלי לשמור</button>
 </div>
 </div>
@@ -533,8 +541,42 @@ class Component extends DCLogic {
     draft: null,
     regionIdx: 0,
     periodIdx: 0,
-    narrow: false
+    narrow: false,
+    pass: "",
+    passInput: "",
+    passChecking: false,
+    passwordConfigured: false
   };
+
+  get authed() {
+    return !!(this.state.user || this.state.pass);
+  }
+
+  _authHeaders(base) {
+    const h = Object.assign({}, base || {});
+    if (this.state.pass) h["x-admin-password"] = this.state.pass;
+    return h;
+  }
+
+  async tryPassword() {
+    const p = (this.state.passInput || "").trim();
+    if (!p) return;
+    this.setState({ passChecking: true, msg: "" });
+    try {
+      const r = await fetch(API + "?auth=1", { headers: { "x-admin-password": p }, cache: "no-store" });
+      const out = await r.json().catch(() => ({}));
+      if (out && out.authOk) {
+        try { sessionStorage.setItem("triviaAdminPass", p); } catch (e) {}
+        this.setState({ pass: p, passInput: "", passChecking: false, browseAnyway: false, msg: "" });
+      } else if (out && !out.passwordConfigured) {
+        this.setState({ passChecking: false, msg: "לא הוגדרה סיסמה בשרת. צריך להוסיף משתנה סביבה בשם ADMIN_PASSWORD ב-Netlify.", msgKind: "warn" });
+      } else {
+        this.setState({ passChecking: false, msg: "הסיסמה אינה נכונה.", msgKind: "bad" });
+      }
+    } catch (e) {
+      this.setState({ passChecking: false, msg: "אין תשובה מהשרת.", msgKind: "bad" });
+    }
+  }
 
   componentDidMount() {
     this._measure = () => {
@@ -544,6 +586,10 @@ class Component extends DCLogic {
     };
     this._measure();
     window.addEventListener("resize", this._measure);
+    try {
+      const saved = sessionStorage.getItem("triviaAdminPass");
+      if (saved) this.state.pass = saved;
+    } catch (e) {}
     this._initIdentity();
     this.load();
   }
@@ -555,11 +601,30 @@ class Component extends DCLogic {
   _initIdentity() {
     const id = window.netlifyIdentity;
     if (!id) { this.setState({ identityReady: false }); return; }
+    const hash = window.location.hash || "";
+    const token = /#(invite_token|recovery_token|confirmation_token)=([^&]+)/.exec(hash);
     try {
-      id.on("init", (u) => this.setState({ identityReady: true, user: u || null }));
+      id.on("init", (u) => {
+        this.setState({ identityReady: true, user: u || null });
+        // A mail link carries its token in the hash. Open the widget so it can be redeemed.
+        if (token && !u) {
+          setTimeout(() => {
+            try { id.open(); } catch (e) {}
+            setTimeout(() => {
+              if (!document.querySelector("#netlify-identity-widget iframe")) {
+                this.setState({ msg: "הקישור מהמייל כבר לא תקף. אפשר לבקש חדש: לחצו «התחברות» ואז «Forgot password».", msgKind: "warn" });
+              }
+            }, 1200);
+          }, 120);
+        }
+      });
       id.on("login", (u) => { this.setState({ user: u || null, browseAnyway: false, msg: "" }); id.close(); });
       id.on("logout", () => this.setState({ user: null }));
-      id.init({ APIUrl: undefined });
+      id.on("error", (err) => this.setState({
+        msg: "שגיאת התחברות: " + ((err && err.message) || "הקישור אולי פג תוקף. בקשו קישור חדש דרך «Forgot password»."),
+        msgKind: "bad"
+      }));
+      id.init();
     } catch (e) {
       this.setState({ identityReady: false });
     }
@@ -570,6 +635,7 @@ class Component extends DCLogic {
       const r = await fetch(API, { headers: { accept: "application/json" }, cache: "no-store" });
       if (!r.ok) throw new Error("http " + r.status);
       const doc = await r.json();
+      if (doc && doc.passwordConfigured) this.setState({ passwordConfigured: true });
       if (doc && doc.content && !doc.empty) {
         this.setState({
           content: doc.content, revision: doc.revision || 0, updatedAt: doc.updatedAt || "",
@@ -599,18 +665,17 @@ class Component extends DCLogic {
   async save() {
     const s = this.state;
     if (!s.content) return;
-    const id = window.netlifyIdentity;
-    if (!s.user) {
-      if (id) { try { id.open("login"); } catch (e) {} }
-      this.setState({ msg: "צריך להתחבר לפני שמירה.", msgKind: "warn" });
+    if (!this.authed) {
+      this.setState({ browseAnyway: false, msg: "צריך להתחבר לפני שמירה.", msgKind: "warn" });
       return;
     }
     this.setState({ saving: true, msg: "" });
     try {
-      const token = await s.user.jwt();
+      const headers = this._authHeaders({ "content-type": "application/json" });
+      if (s.user) headers.authorization = "Bearer " + (await s.user.jwt());
       const r = await fetch(API, {
         method: "PUT",
-        headers: { "content-type": "application/json", authorization: "Bearer " + token },
+        headers: headers,
         body: JSON.stringify({ content: s.content, baseRevision: s.revision })
       });
       const out = await r.json().catch(() => ({}));
@@ -853,15 +918,28 @@ class Component extends DCLogic {
       statusDotStyle: "width:8px;height:8px;border-radius:50%;flex:none;background:" + (s.dirty ? "#C9A227" : conn[0]),
       statusLabel: s.saving ? "שומר…" : (s.dirty ? "יש שינויים שלא נשמרו" : (cloud ? "גרסה " + s.revision + " בענן" : conn[1])),
 
-      authLabel: s.user ? (s.user.email || "מחובר") : "התחברות",
+      authLabel: s.user ? (s.user.email || "מחובר") : (s.pass ? "יציאה" : "התחברות"),
       onAuth: () => {
         const id = window.netlifyIdentity;
-        if (!id) { this.setState({ msg: "ההתחברות זמינה רק באתר החי ב-Netlify.", msgKind: "warn" }); return; }
-        try { s.user ? id.logout() : id.open("login"); } catch (e) {}
+        if (s.pass) {
+          try { sessionStorage.removeItem("triviaAdminPass"); } catch (e) {}
+          this.setState({ pass: "", browseAnyway: false });
+          return;
+        }
+        if (s.user && id) { try { id.logout(); } catch (e) {} return; }
+        if (id) { try { id.open("login"); } catch (e) {} return; }
+        this.setState({ browseAnyway: false, msg: "ההתחברות זמינה רק באתר החי ב-Netlify.", msgKind: "warn" });
       },
       onBrowse: () => this.setState({ browseAnyway: true }),
-      showGate: !!(s.identityReady && !s.user && !s.browseAnyway && s.source !== "offline"),
+      showGate: !!(!this.authed && !s.browseAnyway && s.source !== "offline" && (s.identityReady || s.passwordConfigured)),
       gateNote: "העריכה שמורה לעורכים מאושרים. אחרי התחברות כל שמירה מתעדכנת במשחק עצמו.",
+      showPassBox: !!s.passwordConfigured,
+      passInput: s.passInput,
+      onPassInput: (e) => this.setState({ passInput: e.target.value }),
+      onPassKey: (e) => { if (e.key === "Enter") this.tryPassword(); },
+      passLabel: s.passChecking ? "בודק…" : "כניסה עם סיסמה",
+      onPassSubmit: () => this.tryPassword(),
+      showIdentityBtn: !!s.identityReady,
 
       saveLabel: s.saving ? "שומר…" : "שמירה לענן",
       saveStyle: "display:flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;font-size:15px;font-weight:800;color:#fff;border:none;border-radius:12px;box-shadow:0 12px 26px rgba(0,56,184,.24);" +
