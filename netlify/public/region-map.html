@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מפת אזור</title>
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>
+<style>
+html,body{margin:0;padding:0;background:#DCE7FA;font-family:Rubik,system-ui,sans-serif;overflow:hidden}
+#wrap{width:100vw;height:100vh}
+svg{display:block;width:100%;height:100%}
+</style>
+</head>
+<body>
+<div id="wrap"></div>
+<script>
+const p = new URLSearchParams(location.search);
+const numIn = (v, min, max, dflt) => { const n = parseFloat(v); return Number.isFinite(n) && n >= min && n <= max ? n : dflt; };
+const lat = numIn(p.get("lat"), -90, 90, 31.5);
+const lon = numIn(p.get("lon"), -180, 180, 35);
+const label = (p.get("name") || "").replace(/[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u202A-\u202E\u2066-\u2069]/g, "").slice(0, 40);
+
+const W = 320, H = 460;
+const svg = d3.select("#wrap").append("svg").attr("viewBox", "0 0 " + W + " " + H);
+
+d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json").then(topo => {
+  const countries = topojson.feature(topo, topo.objects.countries).features;
+  const INNER = ["Israel", "West Bank", "Palestine", "Gaza", "Gaza Strip"];
+  const geos = topo.objects.countries.geometries;
+  const inner = geos.filter(g => INNER.indexOf(g.properties && g.properties.name) !== -1);
+  const israel = inner.length > 1
+    ? { type: "Feature", properties: {}, geometry: topojson.merge(topo, inner) }
+    : countries.find(f => f.properties.name === "Israel");
+  const neighbors = countries.filter(f => ["Lebanon","Syria","Jordan","Egypt","Saudi Arabia","Cyprus"].indexOf(f.properties.name) !== -1);
+
+  const proj = d3.geoMercator().fitExtent([[46, 34], [W - 46, H - 34]], israel);
+  const path = d3.geoPath(proj);
+
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#DCE7FA");
+
+  svg.append("g").selectAll("path").data(neighbors).join("path")
+    .attr("d", path).attr("fill", "#EDF2FB").attr("stroke", "#C3D3EF").attr("stroke-width", 1);
+
+  svg.append("path").datum(israel).attr("d", path)
+    .attr("fill", "#FFFFFF").attr("stroke", "#0038B8").attr("stroke-width", 2);
+
+  const pt = proj([lon, lat]);
+  const g = svg.append("g").attr("transform", "translate(" + pt[0] + "," + pt[1] + ")");
+  g.append("circle").attr("r", 34).attr("fill", "#0038B8").attr("opacity", .16);
+  g.append("circle").attr("r", 19).attr("fill", "#0038B8").attr("opacity", .28);
+  g.append("circle").attr("r", 7.5).attr("fill", "#0038B8").attr("stroke", "#fff").attr("stroke-width", 2.5);
+
+  if (label) {
+    const below = pt[1] < H / 2;
+    const ty = below ? pt[1] + 54 : pt[1] - 46;
+    const t = svg.append("text").attr("x", pt[0]).attr("y", ty)
+      .attr("text-anchor", "middle").attr("font-size", 17).attr("font-weight", 800)
+      .attr("fill", "#0038B8").text(label);
+    const box = t.node().getBBox();
+    svg.insert("rect", "text").attr("x", box.x - 10).attr("y", box.y - 6)
+      .attr("width", box.width + 20).attr("height", box.height + 12)
+      .attr("rx", 12).attr("fill", "#fff").attr("stroke", "#0038B8").attr("stroke-width", 1.5);
+    svg.append("line").attr("x1", pt[0]).attr("y1", pt[1]).attr("x2", pt[0])
+      .attr("y2", below ? ty - 22 : ty + 8).attr("stroke", "#0038B8").attr("stroke-width", 1.5).attr("opacity", .5);
+  }
+}).catch(() => {
+  svg.append("text").attr("x", W / 2).attr("y", H / 2).attr("text-anchor", "middle")
+    .attr("font-size", 15).attr("fill", "#46577A").text("לא ניתן לטעון את המפה");
+});
+</script>
+</body>
+</html>

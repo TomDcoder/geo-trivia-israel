@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="../content.js"></script>
+<style>
+html,body{margin:0;padding:0;overflow-x:hidden}
+body{background:#F2F6FD;font-family:Rubik,system-ui,sans-serif;color:#10203D}
+a{color:#0038B8}
+a:hover{color:#5B8FEE}
+button,input,textarea,select{font-family:inherit}
+input::placeholder,textarea::placeholder{color:#8FA0BE;opacity:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<template id="__bundler_thumbnail"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="120" fill="#0038B8"></rect><rect x="30" y="34" width="60" height="10" rx="3" fill="#fff"></rect><rect x="30" y="52" width="60" height="10" rx="3" fill="#8FC2FF"></rect><rect x="30" y="70" width="38" height="10" rx="3" fill="#8FC2FF"></rect></svg></template>
+
+<div dir="rtl" style="--c1:#0038B8;--c2:#5B8FEE;--c3:#F2F6FD;--c4:#E4EDFC;--c5:#46577A;--c6:#10203D;--c7:#CBD9F2;--c8:#D2E0F8;--c9:#8FA0BE;--card:#fff;--ok:#157F3D;--okBg:#E3F6E9;--warn:#C9A227;--warnBg:#FFF6DC;--warnInk:#6B5310;--bad:#C2312B;--badBg:#FCE8E8;font-family:Rubik,system-ui,sans-serif;color:var(--c6);min-height:100vh;box-sizing:border-box;display:flex;flex-direction:{{ shellDir }};align-items:stretch;background:var(--c3)">
+
+<aside style="{{ asideStyle }}">
+<div style="display:flex;align-items:center;gap:11px">
+<div style="flex:none;width:42px;height:42px;border-radius:12px;background:var(--c1);color:#fff;display:flex;align-items:center;justify-content:center">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 19h16"></path><path d="M12 7.4l3.1 5.3H8.9Z"></path><path d="M12 16.6l-3.1-5.3h6.2Z"></path></svg>
+</div>
+<div style="min-width:0">
+<div style="font-size:15px;font-weight:800;line-height:1.2">ניהול התוכן</div>
+<div style="font-size:12px;font-weight:500;color:var(--c9);line-height:1.3">הטריוויה של ישראל</div>
+</div>
+</div>
+
+<nav style="{{ navStyle }}">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="8">
+<button onClick="{{ n.onClick }}" style="{{ n.style }}">
+<span style="flex:none;display:flex">{{ n.icon }}</span>
+<span style="flex:1;text-align:right;font-size:15px;font-weight:700;white-space:nowrap">{{ n.label }}</span>
+<span style="{{ n.countStyle }}">{{ n.count }}</span>
+</button>
+</sc-for>
+</nav>
+
+<div style="{{ connStyle }}">
+<div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800">
+<span style="{{ connDotStyle }}"></span>{{ connTitle }}</div>
+<div style="margin-top:5px;font-size:12px;font-weight:500;line-height:1.5">{{ connNote }}</div>
+<button onClick="{{ onReload }}" style="margin-top:10px;min-height:36px;padding:0 13px;font-size:13px;font-weight:800;color:var(--c1);background:var(--card);border:none;border-radius:10px;cursor:pointer">לרענן מהענן</button>
+</div>
+</aside>
+
+<main style="flex:1;min-width:0;box-sizing:border-box;padding:26px clamp(16px,3vw,34px) 44px;display:flex;flex-direction:column;gap:20px">
+
+<header style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:14px">
+<div style="min-width:0">
+<div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--c2)">{{ eyebrow }}</div>
+<h1 style="margin:6px 0 0;font-size:clamp(23px,3vw,32px);font-weight:900;line-height:1.2">{{ screenTitle }}</h1>
+<p style="margin:6px 0 0;font-size:15px;font-weight:500;color:var(--c5);max-width:58ch;text-wrap:pretty">{{ screenNote }}</p>
+</div>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<div style="{{ statusStyle }}"><span style="{{ statusDotStyle }}"></span>{{ statusLabel }}</div>
+<button onClick="{{ onAuth }}" style="display:flex;align-items:center;gap:7px;min-height:46px;padding:0 15px;font-size:14px;font-weight:800;color:var(--c1);background:var(--card);border:none;border-radius:12px;cursor:pointer;box-shadow:0 8px 24px rgba(0,56,184,.08)">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.6"></circle><path d="M5 19.5c1.4-3.2 4-4.6 7-4.6s5.6 1.4 7 4.6"></path></svg>{{ authLabel }}</button>
+<button onClick="{{ onSave }}" style="{{ saveStyle }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"></path></svg>{{ saveLabel }}</button>
+</div>
+</header>
+
+<sc-if value="{{ msg }}" hint-placeholder-val="{{ false }}">
+<div style="{{ msgStyle }}">
+<span style="flex:1;min-width:0;font-size:14px;font-weight:700;line-height:1.5;text-wrap:pretty">{{ msg }}</span>
+<button onClick="{{ onClearMsg }}" style="flex:none;width:30px;height:30px;font-size:17px;font-weight:800;color:inherit;background:rgba(255,255,255,.55);border:none;border-radius:9px;cursor:pointer">×</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isQuestions }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px;animation:fadeUp .25s ease both">
+
+<div style="background:var(--card);border-radius:20px;padding:16px 18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;flex-direction:column;gap:13px">
+<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+<span style="font-size:13px;font-weight:800;color:var(--c9)">מקבץ</span>
+<sc-for list="{{ tracks }}" as="t" hint-placeholder-count="5">
+<button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+</sc-for>
+</div>
+<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+<span style="font-size:13px;font-weight:800;color:var(--c9)">רמה</span>
+<sc-for list="{{ levels }}" as="l" hint-placeholder-count="3">
+<button onClick="{{ l.onClick }}" style="{{ l.style }}">{{ l.label }} <span style="opacity:.62;font-weight:700">{{ l.count }}</span></button>
+</sc-for>
+</div>
+<sc-if value="{{ isEra }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+<span style="font-size:13px;font-weight:800;color:var(--c9)">תקופה</span>
+<select value="{{ eraIdx }}" onChange="{{ onEraIdx }}" style="min-height:42px;padding:0 12px;font-size:14px;font-weight:700;color:var(--c6);background:var(--c3);border:none;border-radius:11px;cursor:pointer">
+<sc-for list="{{ eraOptions }}" as="o" hint-placeholder-count="8">
+<option value="{{ o.value }}">{{ o.label }}</option>
+</sc-for>
+</select>
+</div>
+</sc-if>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<input value="{{ search }}" onInput="{{ onSearch }}" placeholder="חיפוש בשאלות ובתשובות" style="flex:1;min-width:200px;box-sizing:border-box;min-height:46px;padding:0 14px;font-size:15px;font-weight:600;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none">
+<span style="font-size:13px;font-weight:700;color:var(--c5)">{{ countLabel }}</span>
+<button onClick="{{ onNewQuestion }}" style="min-height:46px;padding:0 17px;font-size:14px;font-weight:800;color:#fff;background:var(--c1);border:none;border-radius:12px;cursor:pointer">שאלה חדשה</button>
+</div>
+</div>
+
+<div style="{{ splitStyle }}">
+<div style="min-width:0;display:flex;flex-direction:column;gap:7px">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+<div style="{{ r.style }}">
+<div style="display:flex;align-items:flex-start;gap:11px">
+<span style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c4);color:var(--c1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900">{{ r.n }}</span>
+<span style="flex:1;min-width:0;font-size:15px;font-weight:700;line-height:1.45;text-wrap:pretty">{{ r.q }}<span style="{{ r.idStyle }}">{{ r.id }}</span></span>
+<span style="{{ r.badgeStyle }}">{{ r.badge }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;margin-top:9px;padding-inline-start:41px;flex-wrap:wrap">
+<span style="flex:1;min-width:120px;font-size:13px;font-weight:600;color:var(--ok)">תשובה: {{ r.correct }}</span>
+<button onClick="{{ r.onEdit }}" style="{{ r.editBtn }}">עריכה</button>
+<button onClick="{{ r.onUp }}" style="{{ r.iconBtn }}">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
+</button>
+<button onClick="{{ r.onDown }}" style="{{ r.iconBtn }}">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"></path></svg>
+</button>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+<div style="padding:26px 18px;border-radius:16px;background:var(--card);text-align:center;font-size:15px;font-weight:600;color:var(--c5)">אין שאלות שמתאימות לחיפוש.</div>
+</sc-if>
+</div>
+
+<div style="{{ panelStyle }}">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+<div style="min-width:0">
+<div style="font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--c2)">{{ editorEyebrow }}</div>
+<div style="margin-top:3px;font-size:19px;font-weight:900">{{ editorTitle }}</div>
+<div style="margin-top:3px;font-size:12px;font-weight:600;color:var(--c9);direction:ltr;text-align:right">{{ editorId }}</div>
+</div>
+</div>
+
+<sc-if value="{{ hasDraft }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:13px">
+<label style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:13px;font-weight:800;color:var(--c5)">נוסח השאלה</span>
+<textarea value="{{ draftQ }}" onInput="{{ onDraftQ }}" rows="2" style="box-sizing:border-box;width:100%;padding:12px 13px;font-size:15px;font-weight:600;line-height:1.5;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none;resize:vertical"></textarea>
+</label>
+
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font-size:13px;font-weight:800;color:var(--c5)">ארבע תשובות · לסמן את הנכונה</span>
+<sc-for list="{{ answers }}" as="a" hint-placeholder-count="4">
+<div style="{{ a.rowStyle }}">
+<button onClick="{{ a.onPick }}" style="{{ a.pickStyle }}">{{ a.mark }}</button>
+<input value="{{ a.text }}" onInput="{{ a.onText }}" placeholder="{{ a.ph }}" style="flex:1;min-width:0;background:none;border:none;outline:none;font-size:15px;font-weight:600;color:var(--c6)">
+</div>
+</sc-for>
+</div>
+
+<label style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:13px;font-weight:800;color:var(--c5)">הסבר אחרי התשובה</span>
+<textarea value="{{ draftE }}" onInput="{{ onDraftE }}" rows="3" style="box-sizing:border-box;width:100%;padding:12px 13px;font-size:14px;font-weight:600;line-height:1.55;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none;resize:vertical"></textarea>
+</label>
+
+<label style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:13px;font-weight:800;color:var(--warnInk)">רמז לשאלה הזאת</span>
+<textarea value="{{ draftH }}" onInput="{{ onDraftH }}" rows="2" placeholder="רמז מיקום — חצי מטבע" style="box-sizing:border-box;width:100%;padding:12px 13px;font-size:14px;font-weight:600;line-height:1.55;color:var(--warnInk);background:var(--warnBg);border:none;border-radius:12px;outline:none;resize:vertical"></textarea>
+</label>
+
+<label style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:13px;font-weight:800;color:var(--c5)">מקור לאימות</span>
+<input value="{{ draftSrc }}" onInput="{{ onDraftSrc }}" placeholder="קישור או שם מקור" style="box-sizing:border-box;width:100%;min-height:46px;padding:0 13px;font-size:14px;font-weight:600;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none">
+</label>
+
+<button onClick="{{ onToggleVerified }}" style="{{ verifyStyle }}">
+<span style="{{ verifyBoxStyle }}">{{ verifyMark }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:14px;font-weight:800">{{ verifyTitle }}</span>
+<span style="display:block;margin-top:2px;font-size:12px;font-weight:600;opacity:.8">{{ verifyNote }}</span>
+</span>
+</button>
+
+<div style="display:flex;gap:9px;flex-wrap:wrap">
+<button onClick="{{ onSaveDraft }}" style="flex:1;min-width:140px;min-height:48px;padding:0 16px;font-size:15px;font-weight:800;color:#fff;background:var(--c1);border:none;border-radius:12px;cursor:pointer">{{ saveDraftLabel }}</button>
+<button onClick="{{ onCancelDraft }}" style="min-height:48px;padding:0 15px;font-size:14px;font-weight:700;color:var(--c5);background:var(--c3);border:none;border-radius:12px;cursor:pointer">ביטול</button>
+<button onClick="{{ onDeleteDraft }}" style="{{ deleteStyle }}">מחיקה</button>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isHints }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;animation:fadeUp .25s ease both">
+<div style="background:var(--card);border-radius:20px;padding:15px 18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+<span style="font-size:13px;font-weight:800;color:var(--c9)">רמה</span>
+<sc-for list="{{ hintTabs }}" as="h" hint-placeholder-count="3">
+<button onClick="{{ h.onClick }}" style="{{ h.style }}">{{ h.label }}</button>
+</sc-for>
+<span style="flex:1"></span>
+<span style="font-size:13px;font-weight:700;color:var(--c5)">{{ hintCountLabel }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ hintRows }}" as="h" hint-placeholder-count="10">
+<div style="background:var(--card);border-radius:16px;padding:13px 15px;box-shadow:0 8px 26px rgba(0,56,184,.07);display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:flex-start;gap:10px">
+<span style="flex:none;width:28px;height:28px;border-radius:9px;background:var(--c4);color:var(--c1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900">{{ h.n }}</span>
+<span style="flex:1;min-width:0;font-size:14px;font-weight:700;line-height:1.45;color:var(--c5);text-wrap:pretty">{{ h.q }}</span>
+</div>
+<textarea value="{{ h.text }}" onInput="{{ h.onInput }}" rows="2" placeholder="רמז מיקום" style="box-sizing:border-box;width:100%;padding:11px 13px;font-size:14px;font-weight:600;line-height:1.55;color:var(--warnInk);background:var(--warnBg);border:none;border-radius:12px;outline:none;resize:vertical"></textarea>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRegions }}" hint-placeholder-val="{{ false }}">
+<div style="{{ splitStyle }}">
+<div style="min-width:0;display:flex;flex-direction:column;gap:7px">
+<sc-for list="{{ regionList }}" as="r" hint-placeholder-count="12">
+<button onClick="{{ r.onClick }}" style="{{ r.style }}">
+<span style="flex:1;min-width:0;text-align:right">
+<span style="display:block;font-size:15px;font-weight:800">{{ r.title }}</span>
+<span style="display:block;margin-top:2px;font-size:12px;font-weight:600;color:var(--c9);line-height:1.4">{{ r.where }}</span>
+</span>
+<span style="{{ r.badgeStyle }}">{{ r.badge }}</span>
+</button>
+</sc-for>
+</div>
+<div style="{{ panelStyle }}">
+<div style="font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--c2)">אזור לימוד</div>
+<div style="margin-top:-6px;font-size:19px;font-weight:900">{{ regionTitle }}</div>
+<sc-for list="{{ regionFields }}" as="f" hint-placeholder-count="6">
+<label style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:13px;font-weight:800;color:var(--c5)">{{ f.label }}</span>
+<sc-if value="{{ f.multi }}" hint-placeholder-val="{{ true }}">
+<textarea value="{{ f.value }}" onInput="{{ f.onInput }}" rows="{{ f.rows }}" placeholder="{{ f.ph }}" style="box-sizing:border-box;width:100%;padding:12px 13px;font-size:14px;font-weight:600;line-height:1.55;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none;resize:vertical"></textarea>
+</sc-if>
+<sc-if value="{{ f.single }}" hint-placeholder-val="{{ false }}">
+<input value="{{ f.value }}" onInput="{{ f.onInput }}" placeholder="{{ f.ph }}" style="box-sizing:border-box;width:100%;min-height:46px;padding:0 13px;font-size:14px;font-weight:600;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none">
+</sc-if>
+</label>
+</sc-for>
+<button onClick="{{ onToggleRegionVerified }}" style="{{ regionVerifyStyle }}">
+<span style="{{ regionVerifyBoxStyle }}">{{ regionVerifyMark }}</span>
+<span style="flex:1;min-width:0;font-size:14px;font-weight:800">{{ regionVerifyTitle }}</span>
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPeriods }}" hint-placeholder-val="{{ false }}">
+<div style="{{ splitStyle }}">
+<div style="min-width:0;display:flex;flex-direction:column;gap:7px">
+<sc-for list="{{ periodList }}" as="p" hint-placeholder-count="8">
+<button onClick="{{ p.onClick }}" style="{{ p.style }}">
+<span style="flex:none;padding:4px 10px;border-radius:999px;background:var(--c4);color:var(--c1);font-size:12px;font-weight:800;direction:ltr">{{ p.years }}</span>
+<span style="flex:1;min-width:0;text-align:right;font-size:15px;font-weight:800;line-height:1.4">{{ p.title }}</span>
+<span style="{{ p.badgeStyle }}">{{ p.badge }}</span>
+</button>
+</sc-for>
+</div>
+<div style="{{ panelStyle }}">
+<div style="font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--c2)">תקופה בהיסטוריה</div>
+<div style="margin-top:-6px;font-size:19px;font-weight:900">{{ periodTitle }}</div>
+<sc-for list="{{ periodFields }}" as="f" hint-placeholder-count="4">
+<label style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:13px;font-weight:800;color:var(--c5)">{{ f.label }}</span>
+<sc-if value="{{ f.multi }}" hint-placeholder-val="{{ true }}">
+<textarea value="{{ f.value }}" onInput="{{ f.onInput }}" rows="{{ f.rows }}" placeholder="{{ f.ph }}" style="box-sizing:border-box;width:100%;padding:12px 13px;font-size:14px;font-weight:600;line-height:1.6;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none;resize:vertical"></textarea>
+</sc-if>
+<sc-if value="{{ f.single }}" hint-placeholder-val="{{ false }}">
+<input value="{{ f.value }}" onInput="{{ f.onInput }}" placeholder="{{ f.ph }}" style="box-sizing:border-box;width:100%;min-height:46px;padding:0 13px;font-size:14px;font-weight:600;color:var(--c6);background:var(--c3);border:none;border-radius:12px;outline:none">
+</sc-if>
+</label>
+</sc-for>
+<button onClick="{{ onTogglePeriodVerified }}" style="{{ periodVerifyStyle }}">
+<span style="{{ periodVerifyBoxStyle }}">{{ periodVerifyMark }}</span>
+<span style="flex:1;min-width:0;font-size:14px;font-weight:800">{{ periodVerifyTitle }}</span>
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPraise }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px;animation:fadeUp .25s ease both">
+<sc-for list="{{ praiseGroups }}" as="g" hint-placeholder-count="6">
+<section style="background:var(--card);border-radius:18px;padding:16px 18px;box-shadow:0 12px 34px rgba(0,56,184,.08);display:flex;flex-direction:column;gap:11px">
+<div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap">
+<span style="font-size:16px;font-weight:900">{{ g.label }}</span>
+<span style="font-size:12px;font-weight:600;color:var(--c9)">{{ g.note }}</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:9px">
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+<input value="{{ it.text }}" onInput="{{ it.onInput }}" placeholder="הודעת עידוד" style="box-sizing:border-box;width:100%;min-height:48px;padding:0 14px;font-size:15px;font-weight:700;color:var(--c1);background:var(--c4);border:none;border-radius:12px;outline:none">
+</sc-for>
+</div>
+</section>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isScoring }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px;animation:fadeUp .25s ease both">
+
+<section style="background:var(--card);border-radius:20px;padding:18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;flex-direction:column;gap:12px">
+<div style="font-size:17px;font-weight:900">מטבעות</div>
+<sc-for list="{{ coinFields }}" as="f" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--c3)">
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:14px;font-weight:800;line-height:1.35">{{ f.label }}</span>
+<span style="display:block;margin-top:2px;font-size:12px;font-weight:600;color:var(--c9)">{{ f.note }}</span>
+</span>
+<button onClick="{{ f.onMinus }}" style="{{ f.stepStyle }}">−</button>
+<span style="min-width:40px;text-align:center;font-size:19px;font-weight:900;color:var(--c1)">{{ f.value }}</span>
+<button onClick="{{ f.onPlus }}" style="{{ f.stepStyle }}">+</button>
+</div>
+</sc-for>
+<div style="padding:13px 14px;border-radius:14px;background:var(--c4);font-size:14px;font-weight:800;color:var(--c1)">ניקוד מלא במשחק: {{ maxScore }}</div>
+</section>
+
+<section style="background:var(--card);border-radius:20px;padding:18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;flex-direction:column;gap:12px">
+<div style="font-size:17px;font-weight:900">אורך המשחק</div>
+<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--c3)">
+<span style="flex:1;min-width:0;font-size:14px;font-weight:800">שאלות במשחק</span>
+<button onClick="{{ onCountMinus }}" style="{{ stepStyle }}">−</button>
+<span style="min-width:40px;text-align:center;font-size:19px;font-weight:900;color:var(--c1)">{{ qCount }}</span>
+<button onClick="{{ onCountPlus }}" style="{{ stepStyle }}">+</button>
+</div>
+<sc-for list="{{ toggles }}" as="t" hint-placeholder-count="3">
+<button onClick="{{ t.onClick }}" style="display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;min-height:62px;padding:0 14px;background:var(--c3);border:none;border-radius:14px;cursor:pointer;text-align:right">
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:14px;font-weight:800;line-height:1.35">{{ t.label }}</span>
+<span style="display:block;margin-top:2px;font-size:12px;font-weight:600;color:var(--c9);line-height:1.4">{{ t.note }}</span>
+</span>
+<span style="{{ t.trackStyle }}"><span style="{{ t.knobStyle }}"></span></span>
+</button>
+</sc-for>
+</section>
+
+<section style="background:var(--card);border-radius:20px;padding:18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;flex-direction:column;gap:12px">
+<div style="font-size:17px;font-weight:900">תארים במסך הציונים</div>
+<sc-for list="{{ bands }}" as="b" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--c3)">
+<span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ b.color }}"></span>
+<span style="flex:1;min-width:0;font-size:14px;font-weight:800">{{ b.label }}</span>
+<span style="font-size:12px;font-weight:700;color:var(--c9)">מ־</span>
+<input value="{{ b.from }}" onInput="{{ b.onFrom }}" inputmode="numeric" style="{{ b.inputStyle }}">
+</div>
+</sc-for>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isOrder }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;animation:fadeUp .25s ease both">
+<section style="background:var(--card);border-radius:20px;padding:18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;flex-direction:column;gap:10px">
+<div style="font-size:17px;font-weight:900">איך נבחר סדר השאלות</div>
+<sc-for list="{{ orderModes }}" as="m" hint-placeholder-count="3">
+<button onClick="{{ m.onClick }}" style="{{ m.style }}">
+<span style="{{ m.dotStyle }}"></span>
+<span style="flex:1;min-width:0;text-align:right">
+<span style="display:block;font-size:15px;font-weight:800">{{ m.label }}</span>
+<span style="display:block;margin-top:3px;font-size:13px;font-weight:600;color:var(--c5);line-height:1.5">{{ m.note }}</span>
+</span>
+</button>
+</sc-for>
+<div style="padding:13px 14px;border-radius:14px;background:var(--warnBg);color:var(--warnInk);font-size:13px;font-weight:700;line-height:1.55">הסדר הקבוע הוא הסדר של הרשימה במסך השאלות. שם אפשר להזיז שאלה במעלה או במורד.</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVerify }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;animation:fadeUp .25s ease both">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:11px">
+<sc-for list="{{ verifyStats }}" as="v" hint-placeholder-count="4">
+<div style="background:var(--card);border-radius:16px;padding:15px 16px;box-shadow:0 10px 30px rgba(0,56,184,.08)">
+<div style="font-size:28px;font-weight:900;color:{{ v.color }};line-height:1">{{ v.value }}</div>
+<div style="margin-top:5px;font-size:13px;font-weight:700;color:var(--c5)">{{ v.label }}</div>
+</div>
+</sc-for>
+</div>
+<section style="background:var(--card);border-radius:20px;padding:18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+<span style="font-size:17px;font-weight:900">ממתין לאימות</span>
+<span style="font-size:13px;font-weight:600;color:var(--c9)">{{ verifyListNote }}</span>
+</div>
+<sc-for list="{{ verifyRows }}" as="v" hint-placeholder-count="8">
+<div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:14px;background:var(--c3);flex-wrap:wrap">
+<span style="flex:none;padding:4px 10px;border-radius:999px;background:var(--warnBg);color:var(--warnInk);font-size:12px;font-weight:800">{{ v.kind }}</span>
+<span style="flex:1;min-width:140px;font-size:14px;font-weight:700;line-height:1.45;text-wrap:pretty">{{ v.text }}</span>
+<button onClick="{{ v.onGo }}" style="flex:none;min-height:38px;padding:0 14px;font-size:13px;font-weight:800;color:var(--c1);background:var(--c4);border:none;border-radius:11px;cursor:pointer">לעריכה</button>
+</div>
+</sc-for>
+<sc-if value="{{ allVerified }}" hint-placeholder-val="{{ false }}">
+<div style="padding:22px 16px;border-radius:14px;background:var(--okBg);color:#0E5A2B;text-align:center;font-size:15px;font-weight:800">כל התוכן מסומן כמאומת.</div>
+</sc-if>
+</section>
+</div>
+</sc-if>
+
+<footer style="margin-top:auto;padding-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--c9)">
+<span>{{ revLabel }}</span>
+<span style="flex:1"></span>
+<button onClick="{{ onExport }}" style="min-height:40px;padding:0 14px;font-size:13px;font-weight:800;color:var(--c5);background:var(--card);border:none;border-radius:11px;cursor:pointer">הורדת גיבוי JSON</button>
+<a href="/">למשחק</a>
+</footer>
+</main>
+
+<sc-if value="{{ showGate }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:60;background:rgba(9,20,42,.72);display:flex;align-items:center;justify-content:center;padding:20px">
+<div style="width:min(420px,100%);box-sizing:border-box;background:var(--card);border-radius:22px;padding:28px 26px;box-shadow:0 30px 70px rgba(9,20,42,.4);text-align:center">
+<div style="margin:0 auto;width:52px;height:52px;border-radius:15px;background:var(--c1);color:#fff;display:flex;align-items:center;justify-content:center">
+<svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.2"></rect><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"></path></svg>
+</div>
+<h2 style="margin:16px 0 0;font-size:23px;font-weight:900">ניהול התוכן</h2>
+<p style="margin:8px 0 0;font-size:15px;font-weight:500;color:var(--c5);line-height:1.6;text-wrap:pretty">{{ gateNote }}</p>
+<sc-if value="{{ showPassBox }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:9px">
+<input type="password" value="{{ passInput }}" onInput="{{ onPassInput }}" onKeyDown="{{ onPassKey }}" placeholder="סיסמת עורך" style="box-sizing:border-box;width:100%;min-height:52px;padding:0 15px;font-size:16px;font-weight:600;color:var(--c6);background:var(--c3);border:none;border-radius:14px;outline:none;text-align:center">
+<button onClick="{{ onPassSubmit }}" style="width:100%;min-height:52px;font-size:16px;font-weight:800;color:#fff;background:var(--c1);border:none;border-radius:14px;cursor:pointer">{{ passLabel }}</button>
+</div>
+</sc-if>
+<sc-if value="{{ showIdentityBtn }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ onAuth }}" style="margin-top:10px;width:100%;min-height:52px;font-size:16px;font-weight:800;color:var(--c1);background:var(--c4);border:none;border-radius:14px;cursor:pointer">התחברות עם אימייל</button>
+</sc-if>
+<button onClick="{{ onBrowse }}" style="margin-top:10px;width:100%;min-height:46px;font-size:14px;font-weight:700;color:var(--c5);background:var(--c3);border:none;border-radius:12px;cursor:pointer">לצפייה בלי לשמור</button>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const TRACKS = [
+  { key: "il", label: "ישראל", keys: ["BEGINNER", "INTERMEDIATE", "ADVANCED"] },
+  { key: "cap", label: "ערי בירה", keys: ["CAP_BEGINNER", "CAP_MID", "CAP_EXPERT"] },
+  { key: "ww2", label: "מלחמת העולם", keys: ["WW2_BEGINNER", "WW2_MID", "WW2_EXPERT"] },
+  { key: "evt", label: "אירועים בעולם", keys: ["EVT_BEGINNER", "EVT_MID", "EVT_EXPERT"] },
+  { key: "era", label: "היסטוריה של ישראל", keys: ["ERA_BEGINNER_PERIODS", "ERA_MID_PERIODS", "ERA_EXPERT_PERIODS"], nested: true }
+];
+const LEVELS = ["מתחילים", "רמת ביניים", "מטיבי לכת"];
+const HINT_KEYS = ["beginner", "mid", "expert"];
+const LETTERS = ["א", "ב", "ג", "ד"];
+const API = "/api/content";
+const SET_DEFAULTS = { questionCount: 30, first: 3, second: 1, hintCost: 0.5, secondTry: true, liveScore: true, praise: true, orderMode: "fixed", bands: [70, 50, 30] };
+
+const PRAISE_GROUPS = [
+  { key: "PRAISE_M", label: "ישראל · לשון זכר", note: "שלוש נכונות ברצף" },
+  { key: "PRAISE_F", label: "ישראל · לשון נקבה", note: "שלוש נכונות ברצף" },
+  { key: "WORLD_PRAISE_M", label: "העולם · לשון זכר", note: "מלחמת העולם ואירועים" },
+  { key: "WORLD_PRAISE_F", label: "העולם · לשון נקבה", note: "מלחמת העולם ואירועים" },
+  { key: "CAP_PRAISE_M", label: "ערי בירה · לשון זכר", note: "מקבץ הבירות" },
+  { key: "CAP_PRAISE_F", label: "ערי בירה · לשון נקבה", note: "מקבץ הבירות" }
+];
+
+const NAV = [
+  { key: "questions", label: "שאלות ותשובות", icon: "M5 4.5h14v15H5zM8.5 9h7M8.5 13h4.5" },
+  { key: "hints", label: "רמזים", icon: "M9.5 20h5M10 17h4M12 3a6 6 0 0 1 3.4 10.9V17H8.6v-3.1A6 6 0 0 1 12 3z" },
+  { key: "regions", label: "אזורי לימוד", icon: "M12 21s6.2-6 6.2-10.3A6.2 6.2 0 0 0 5.8 10.7C5.8 15 12 21 12 21zM12 12.4a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" },
+  { key: "periods", label: "תקופות היסטוריה", icon: "M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 8v4.4l3 1.8" },
+  { key: "praise", label: "הודעות עידוד", icon: "M4.8 5h14.4v10.2H11l-4 3.4v-3.4H4.8z" },
+  { key: "scoring", label: "ניקוד וכמות", icon: "M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 8v8M9.5 10.2h5M9.5 13.8h5" },
+  { key: "order", label: "סדר שאלות", icon: "M4 7h11M4 12h8M4 17h11M18 6v12M15.5 15.5 18 18l2.5-2.5" },
+  { key: "verify", label: "אימות מקורות", icon: "M12 3.6l7 2.6v5.2c0 4.1-2.9 7.2-7 8.6-4.1-1.4-7-4.5-7-8.6V6.2zM9 12l2.2 2.2L15.4 10" }
+];
+
+const TITLES = {
+  questions: ["מאגר השאלות", "שאלות ותשובות", "כל שאלה מוצגת עם ארבע תשובות. עריכה כאן משנה גם את ההסבר והרמז שנראים בזמן המשחק."],
+  hints: ["רמזים", "רמז מיקום לכל שאלה", "הרמז הראשון בכל שאלה. הוא מנוסח לפי מקומה של השאלה ברשימה, ועולה חצי מטבע."],
+  regions: ["מסך הלימוד", "אזורי לימוד", "שנים־עשר האזורים במסך «בא לי ללמוד», כולל המידע והמפה של כל אזור."],
+  periods: ["מסך ההיסטוריה", "תקופות בהיסטוריה", "שמונה תקופות מ־1948 ועד ימינו. הן מזינות גם את מקבץ שאלות ההיסטוריה."],
+  praise: ["בזמן המשחק", "הודעות עידוד", "ההודעה שמופיעה במרכז המסך אחרי שלוש תשובות נכונות ברצף בניסיון ראשון."],
+  scoring: ["הגדרות משחק", "ניקוד וכמות שאלות", "מטבעות, אורך המשחק והתארים במסך הציונים. ההגדרות נכנסות לתוקף במשחק הבא."],
+  order: ["הגדרות משחק", "סדר שאלות", "סדר קבוע, אקראי לגמרי, או אקראי בתוך שלשות כדי לשמור על עליית הקושי."],
+  verify: ["בקרת איכות", "אימות מקורות", "כל התוכן שנכתב ועדיין לא אומת מול מקור. סימון «אומת» נעשה בתוך העריכה עצמה."]
+};
+
+const chip = (on) => "min-height:40px;padding:0 15px;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;border-radius:999px;cursor:pointer;border:none;" +
+  (on ? "background:#0038B8;color:#fff" : "background:#F2F6FD;color:#46577A");
+const listBtn = (on) => "display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:13px 14px;border:none;border-radius:14px;cursor:pointer;text-align:right;box-shadow:0 8px 24px rgba(0,56,184,.06);" +
+  (on ? "background:#E4EDFC" : "background:#fff");
+const badgeStyle = (ok) => "flex:none;white-space:nowrap;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:800;" +
+  (ok ? "background:#E3F6E9;color:#157F3D" : "background:#FFF6DC;color:#9A7A12");
+const STEP = "width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#0038B8;background:#E4EDFC;border:none;border-radius:11px;cursor:pointer";
+
+function clone(v) {
+  if (Array.isArray(v)) return v.slice();
+  if (v && typeof v === "object") return Object.assign({}, v);
+  return v;
+}
+
+// Immutable set along a path of keys/indices.
+function setIn(root, path, value) {
+  if (!path.length) return value;
+  const out = clone(root) || (typeof path[0] === "number" ? [] : {});
+  out[path[0]] = setIn(out[path[0]], path.slice(1), value);
+  return out;
+}
+function getIn(root, path) {
+  let cur = root;
+  for (let i = 0; i < path.length; i++) {
+    if (cur == null) return undefined;
+    cur = cur[path[i]];
+  }
+  return cur;
+}
+
+class Component extends DCLogic {
+  state = {
+    screen: "questions",
+    content: null,
+    revision: 0,
+    updatedAt: "",
+    updatedBy: "",
+    source: "loading",
+    user: null,
+    identityReady: false,
+    browseAnyway: false,
+    saving: false,
+    dirty: false,
+    msg: "",
+    msgKind: "info",
+    track: "il",
+    level: 0,
+    eraIdx: 0,
+    hintLevel: 0,
+    search: "",
+    selected: 0,
+    isNew: false,
+    draft: null,
+    regionIdx: 0,
+    periodIdx: 0,
+    narrow: false,
+    pass: "",
+    passInput: "",
+    passChecking: false,
+    passwordConfigured: false
+  };
+
+  get authed() {
+    return !!(this.state.user || this.state.pass);
+  }
+
+  _authHeaders(base) {
+    const h = Object.assign({}, base || {});
+    if (this.state.pass) h["x-admin-password"] = this.state.pass;
+    return h;
+  }
+
+  async tryPassword() {
+    const p = (this.state.passInput || "").trim();
+    if (!p) return;
+    this.setState({ passChecking: true, msg: "" });
+    try {
+      const r = await fetch(API + "?auth=1", { headers: { "x-admin-password": p }, cache: "no-store" });
+      const out = await r.json().catch(() => ({}));
+      if (out && out.authOk) {
+        try { sessionStorage.setItem("triviaAdminPass", p); } catch (e) {}
+        this.setState({ pass: p, passInput: "", passChecking: false, browseAnyway: false, msg: "" });
+      } else if (out && !out.passwordConfigured) {
+        this.setState({ passChecking: false, msg: "לא הוגדרה סיסמה בשרת. צריך להוסיף משתנה סביבה בשם ADMIN_PASSWORD ב-Netlify.", msgKind: "warn" });
+      } else {
+        this.setState({ passChecking: false, msg: "הסיסמה אינה נכונה.", msgKind: "bad" });
+      }
+    } catch (e) {
+      this.setState({ passChecking: false, msg: "אין תשובה מהשרת.", msgKind: "bad" });
+    }
+  }
+
+  componentDidMount() {
+    this._measure = () => {
+      const w = window.innerWidth || 1280;
+      const n = w < 900;
+      if (n !== this.state.narrow) this.setState({ narrow: n });
+    };
+    this._measure();
+    window.addEventListener("resize", this._measure);
+    try {
+      const saved = sessionStorage.getItem("triviaAdminPass");
+      if (saved) this.state.pass = saved;
+    } catch (e) {}
+    this._initIdentity();
+    this.load();
+  }
+
+  componentWillUnmount() {
+    if (this._measure) window.removeEventListener("resize", this._measure);
+  }
+
+  _initIdentity() {
+    const id = window.netlifyIdentity;
+    if (!id) { this.setState({ identityReady: false }); return; }
+    const hash = window.location.hash || "";
+    const token = /#(invite_token|recovery_token|confirmation_token)=([^&]+)/.exec(hash);
+    try {
+      id.on("init", (u) => {
+        this.setState({ identityReady: true, user: u || null });
+        // A mail link carries its token in the hash. Open the widget so it can be redeemed.
+        if (token && !u) {
+          setTimeout(() => {
+            try { id.open(); } catch (e) {}
+            setTimeout(() => {
+              if (!document.querySelector("#netlify-identity-widget iframe")) {
+                this.setState({ msg: "הקישור מהמייל כבר לא תקף. אפשר לבקש חדש: לחצו «התחברות» ואז «Forgot password».", msgKind: "warn" });
+              }
+            }, 1200);
+          }, 120);
+        }
+      });
+      id.on("login", (u) => { this.setState({ user: u || null, browseAnyway: false, msg: "" }); id.close(); });
+      id.on("logout", () => this.setState({ user: null }));
+      id.on("error", (err) => this.setState({
+        msg: "שגיאת התחברות: " + ((err && err.message) || "הקישור אולי פג תוקף. בקשו קישור חדש דרך «Forgot password»."),
+        msgKind: "bad"
+      }));
+      id.init();
+    } catch (e) {
+      this.setState({ identityReady: false });
+    }
+  }
+
+  async load() {
+    try {
+      const r = await fetch(API, { headers: { accept: "application/json" }, cache: "no-store" });
+      if (!r.ok) throw new Error("http " + r.status);
+      const doc = await r.json();
+      if (doc && doc.passwordConfigured) this.setState({ passwordConfigured: true });
+      if (doc && doc.content && !doc.empty) {
+        this.setState({
+          content: doc.content, revision: doc.revision || 0, updatedAt: doc.updatedAt || "",
+          updatedBy: doc.updatedBy || "", source: "cloud", dirty: false
+        });
+        return;
+      }
+      // API is live but the store is still empty — seed the editor from the bundled content.
+      const local = window.TRIVIA_CONTENT;
+      this.setState({
+        content: local ? JSON.parse(JSON.stringify(local)) : null,
+        revision: 0, source: "seed", dirty: false,
+        msg: local ? "הענן עדיין ריק. התוכן שמוצג הוא זה שמצורף למשחק — שמירה ראשונה תעלה אותו לענן." : "אין תוכן להצגה.",
+        msgKind: "warn"
+      });
+    } catch (e) {
+      const local = window.TRIVIA_CONTENT;
+      this.setState({
+        content: local ? JSON.parse(JSON.stringify(local)) : null,
+        revision: 0, source: "offline", dirty: false,
+        msg: local ? "אין חיבור לשרת. אפשר לערוך ולהוריד גיבוי, אבל לא לשמור לענן." : "אין חיבור לשרת ואין תוכן מקומי.",
+        msgKind: "warn"
+      });
+    }
+  }
+
+  async save() {
+    const s = this.state;
+    if (!s.content) return;
+    if (!this.authed) {
+      this.setState({ browseAnyway: false, msg: "צריך להתחבר לפני שמירה.", msgKind: "warn" });
+      return;
+    }
+    this.setState({ saving: true, msg: "" });
+    try {
+      const headers = this._authHeaders({ "content-type": "application/json" });
+      if (s.user) headers.authorization = "Bearer " + (await s.user.jwt());
+      const r = await fetch(API, {
+        method: "PUT",
+        headers: headers,
+        body: JSON.stringify({ content: s.content, baseRevision: s.revision })
+      });
+      const out = await r.json().catch(() => ({}));
+      if (r.status === 409) {
+        this.setState({ saving: false, msg: "מישהו אחר שמר לפניך (גרסה " + out.revision + "). כדאי לרענן מהענן ולערוך מחדש.", msgKind: "bad" });
+        return;
+      }
+      if (r.status === 422) {
+        this.setState({ saving: false, msg: "התוכן לא עבר בדיקה: " + (out.details || []).slice(0, 3).join(" · "), msgKind: "bad" });
+        return;
+      }
+      if (!r.ok) throw new Error(out.message || ("http " + r.status));
+      this.setState({
+        saving: false, dirty: false, source: "cloud",
+        revision: out.revision || s.revision + 1, updatedAt: out.updatedAt || "", updatedBy: out.updatedBy || "",
+        msg: "נשמר לענן. המשחק יטען את הגרסה הזאת בכל פתיחה חדשה.", msgKind: "ok"
+      });
+    } catch (e) {
+      this.setState({ saving: false, msg: "השמירה נכשלה: " + (e && e.message ? e.message : "שגיאה"), msgKind: "bad" });
+    }
+  }
+
+  patch(path, value) {
+    this.setState({ content: setIn(this.state.content, path, value), dirty: true });
+  }
+
+  get settings() {
+    return Object.assign({}, SET_DEFAULTS, (this.state.content && this.state.content.SETTINGS) || {});
+  }
+
+  setSetting(key, value) {
+    this.patch(["SETTINGS"], Object.assign({}, this.settings, { [key]: value }));
+  }
+
+  get trackDef() {
+    return TRACKS.filter((t) => t.key === this.state.track)[0] || TRACKS[0];
+  }
+
+  get batchPath() {
+    const s = this.state;
+    const t = this.trackDef;
+    const key = t.keys[s.level];
+    return t.nested ? [key, s.eraIdx] : [key];
+  }
+
+  get batch() {
+    return getIn(this.state.content, this.batchPath) || [];
+  }
+
+  _draft() {
+    const s = this.state;
+    if (s.draft) return s.draft;
+    const q = this.batch[s.selected];
+    return q ? Object.assign({}, q, { a: (q.a || []).slice() }) : null;
+  }
+
+  _setDraft(patch) {
+    this.setState({ draft: Object.assign({}, this._draft() || {}, patch) });
+  }
+
+  _move(i, dir) {
+    const list = this.batch.slice();
+    const j = i + dir;
+    if (j < 0 || j >= list.length) return;
+    const t = list[i]; list[i] = list[j]; list[j] = t;
+    this.patch(this.batchPath, list);
+    if (this.state.selected === i) this.setState({ selected: j, draft: null });
+  }
+
+  goTo(kind, payload) {
+    if (kind === "question") {
+      this.setState({ screen: "questions", track: payload.track, level: payload.level, eraIdx: payload.eraIdx || 0, selected: payload.index, draft: null, isNew: false, search: "" });
+    } else if (kind === "region") {
+      this.setState({ screen: "regions", regionIdx: payload.index });
+    } else if (kind === "period") {
+      this.setState({ screen: "periods", periodIdx: payload.index });
+    }
+  }
+
+  unverified() {
+    const c = this.state.content;
+    const out = [];
+    if (!c) return out;
+    TRACKS.forEach((t) => {
+      t.keys.forEach((key, level) => {
+        const tiers = t.nested ? (c[key] || []) : [c[key] || []];
+        tiers.forEach((list, eraIdx) => {
+          (list || []).forEach((q, index) => {
+            if (q && !q.verified) out.push({ kind: t.label + " · " + LEVELS[level], text: q.q, go: () => this.goTo("question", { track: t.key, level, eraIdx: t.nested ? eraIdx : 0, index }) });
+          });
+        });
+      });
+    });
+    (c.REGIONS || []).forEach((r, index) => {
+      if (r && !r.verified) out.push({ kind: "אזור לימוד", text: r.title, go: () => this.goTo("region", { index }) });
+    });
+    (c.PERIODS || []).forEach((p, index) => {
+      if (p && !p.verified) out.push({ kind: "תקופה", text: p.years + " · " + p.title, go: () => this.goTo("period", { index }) });
+    });
+    return out;
+  }
+
+  totals() {
+    const c = this.state.content;
+    let q = 0, v = 0;
+    if (!c) return { q: 0, v: 0 };
+    TRACKS.forEach((t) => t.keys.forEach((key) => {
+      const tiers = t.nested ? (c[key] || []) : [c[key] || []];
+      tiers.forEach((list) => (list || []).forEach((it) => { q++; if (it && it.verified) v++; }));
+    }));
+    return { q, v };
+  }
+
+  exportJson() {
+    const s = this.state;
+    if (!s.content) return;
+    try {
+      const blob = new Blob([JSON.stringify({ revision: s.revision, updatedAt: s.updatedAt, content: s.content }, null, 1)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "trivia-content-r" + s.revision + ".json";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    } catch (e) {
+      this.setState({ msg: "ההורדה נכשלה.", msgKind: "bad" });
+    }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const c = s.content;
+    const narrow = s.narrow;
+    const set = this.settings;
+    const t = this.trackDef;
+    const batch = this.batch;
+    const totals = this.totals();
+    const pending = this.unverified();
+
+    const icon = (d) => React.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.9, strokeLinecap: "round", strokeLinejoin: "round" }, React.createElement("path", { d: d }));
+
+    const t3 = TITLES[s.screen] || TITLES.questions;
+    const cloud = s.source === "cloud";
+    const connMap = {
+      loading: ["#C9A227", "בודק חיבור", "טוען את התוכן מהענן."],
+      cloud: ["#157F3D", "מחובר לענן", "המשחק והמערכת קוראים את אותו התוכן. שמירה מתעדכנת מיד."],
+      seed: ["#C9A227", "הענן ריק", "התוכן שמוצג מצורף למשחק. שמירה ראשונה תעלה אותו לענן."],
+      offline: ["#C2312B", "אין חיבור", "אפשר לערוך ולהוריד גיבוי, אבל לא לשמור לענן."]
+    };
+    const conn = connMap[s.source] || connMap.loading;
+
+    const msgTone = { ok: ["#E3F6E9", "#0E5A2B"], warn: ["#FFF6DC", "#6B5310"], bad: ["#FCE8E8", "#8E2420"], info: ["#E4EDFC", "#0038B8"] }[s.msgKind] || ["#E4EDFC", "#0038B8"];
+
+    const q = (s.search || "").trim();
+    const rows = batch.map((it, i) => ({ it, i })).filter((x) => !q || (x.it.q || "").indexOf(q) > -1 || (x.it.a || []).join(" ").indexOf(q) > -1);
+    const d = this._draft() || { id: "", q: "", a: ["", "", "", ""], c: 0, e: "", h: "", verified: false, source: "" };
+
+    const hintKey = HINT_KEYS[s.hintLevel];
+    const hintList = ((c && c.HINTS) || {})[hintKey] || [];
+    const hintQs = (c && c[TRACKS[0].keys[s.hintLevel]]) || [];
+    const hintRowCount = Math.max(hintList.length, hintQs.length);
+
+    const region = ((c && c.REGIONS) || [])[s.regionIdx] || {};
+    const period = ((c && c.PERIODS) || [])[s.periodIdx] || {};
+
+    const field = (label, path, opts) => {
+      const o = opts || {};
+      return {
+        label: label, ph: o.ph || "", rows: o.rows || 3,
+        multi: !!o.multi, single: !o.multi,
+        value: getIn(c, path) == null ? "" : String(getIn(c, path)),
+        onInput: (e) => {
+          const raw = e.target.value;
+          this.patch(path, o.num ? (raw === "" ? "" : Number(raw)) : raw);
+        }
+      };
+    };
+
+    const regionFields = [
+      field("שם האזור", ["REGIONS", s.regionIdx, "title"]),
+      field("איפה זה", ["REGIONS", s.regionIdx, "where"], { ph: "תיאור מקום קצר" }),
+      field("קו רוחב", ["REGIONS", s.regionIdx, "lat"], { num: true }),
+      field("קו אורך", ["REGIONS", s.regionIdx, "lon"], { num: true }),
+      field("פתיח", ["REGIONS", s.regionIdx, "blurb"], { multi: true, rows: 3 })
+    ];
+    ((region.sections) || []).forEach((sec, i) => {
+      regionFields.push(field("כותרת פרק " + (i + 1), ["REGIONS", s.regionIdx, "sections", i, "h"]));
+      regionFields.push(field("פרק " + (i + 1), ["REGIONS", s.regionIdx, "sections", i, "t"], { multi: true, rows: 4 }));
+    });
+    regionFields.push(field("כדאי לראות באזור", ["REGIONS", s.regionIdx, "see"], { multi: true, rows: 2 }));
+    regionFields.push(field("מקור לאימות", ["REGIONS", s.regionIdx, "source"], { ph: "קישור או שם מקור" }));
+
+    const periodFields = [
+      field("שנים", ["PERIODS", s.periodIdx, "years"], { ph: "1948–1956" }),
+      field("כותרת", ["PERIODS", s.periodIdx, "title"]),
+      field("הטקסט", ["PERIODS", s.periodIdx, "text"], { multi: true, rows: 9 }),
+      field("מקור לאימות", ["PERIODS", s.periodIdx, "source"], { ph: "קישור או שם מקור" })
+    ];
+
+    const verifyBox = (ok) => "flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;background:" + (ok ? "#157F3D" : "#C9A227");
+    const verifyBtn = (ok) => "display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;min-height:58px;padding:0 14px;border:none;border-radius:14px;cursor:pointer;text-align:right;" +
+      (ok ? "background:#E3F6E9;color:#0E5A2B" : "background:#FFF6DC;color:#6B5310");
+
+    const modeDefs = [
+      { key: "fixed", label: "סדר קבוע", note: "לפי הרשימה במסך השאלות, מהקלה לקשה" },
+      { key: "random", label: "אקראי בכל משחק", note: "כל שחקן מקבל סדר אחר" },
+      { key: "groups", label: "אקראי בתוך שלשות", note: "שומר על עליית הקושי ומגוון בין משחקים" }
+    ];
+
+    return {
+      shellDir: narrow ? "column" : "row",
+      asideStyle: "flex:none;box-sizing:border-box;background:var(--card);box-shadow:0 0 40px rgba(0,56,184,.07);display:flex;gap:" + (narrow ? "14px" : "26px") + ";" +
+        (narrow ? "flex-direction:column;padding:16px 16px 14px;position:sticky;top:0;z-index:20" : "width:252px;align-self:stretch;flex-direction:column;padding:22px 18px"),
+      navStyle: narrow
+        ? "display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch"
+        : "display:flex;flex-direction:column;gap:4px",
+      connStyle: (narrow ? "display:none;" : "margin-top:auto;") + "padding:14px;border-radius:14px;background:var(--c3);color:var(--c5)",
+      connDotStyle: "width:9px;height:9px;border-radius:50%;flex:none;background:" + conn[0],
+      connTitle: conn[1],
+      connNote: conn[2],
+      onReload: () => { this.setState({ msg: "", draft: null }); this.load(); },
+
+      nav: NAV.map((n) => {
+        const on = s.screen === n.key;
+        const count = n.key === "questions" ? String(totals.q) : (n.key === "verify" && pending.length ? String(pending.length) : "");
+        return {
+          label: n.label, icon: icon(n.icon), count: count,
+          countStyle: count ? "padding:3px 9px;border-radius:999px;background:" + (on ? "rgba(255,255,255,.22)" : "#F2F6FD") + ";font-size:12px;font-weight:800" : "display:none",
+          style: "display:flex;align-items:center;gap:11px;box-sizing:border-box;min-height:48px;padding:0 13px;border:none;border-radius:13px;cursor:pointer;text-align:right;flex:none;" +
+            (narrow ? "" : "width:100%;") + (on ? "background:#0038B8;color:#fff" : "background:none;color:#46577A"),
+          onClick: () => this.setState({ screen: n.key, msg: "" })
+        };
+      }),
+
+      eyebrow: t3[0], screenTitle: t3[1], screenNote: t3[2],
+      isQuestions: s.screen === "questions", isHints: s.screen === "hints", isRegions: s.screen === "regions",
+      isPeriods: s.screen === "periods", isPraise: s.screen === "praise", isScoring: s.screen === "scoring",
+      isOrder: s.screen === "order", isVerify: s.screen === "verify",
+
+      statusStyle: "display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:999px;background:var(--card);font-size:13px;font-weight:700;color:var(--c5);box-shadow:0 8px 24px rgba(0,56,184,.08)",
+      statusDotStyle: "width:8px;height:8px;border-radius:50%;flex:none;background:" + (s.dirty ? "#C9A227" : conn[0]),
+      statusLabel: s.saving ? "שומר…" : (s.dirty ? "יש שינויים שלא נשמרו" : (cloud ? "גרסה " + s.revision + " בענן" : conn[1])),
+
+      authLabel: s.user ? (s.user.email || "מחובר") : (s.pass ? "יציאה" : "התחברות"),
+      onAuth: () => {
+        const id = window.netlifyIdentity;
+        if (s.pass) {
+          try { sessionStorage.removeItem("triviaAdminPass"); } catch (e) {}
+          this.setState({ pass: "", browseAnyway: false });
+          return;
+        }
+        if (s.user && id) { try { id.logout(); } catch (e) {} return; }
+        if (id) { try { id.open("login"); } catch (e) {} return; }
+        this.setState({ browseAnyway: false, msg: "ההתחברות זמינה רק באתר החי ב-Netlify.", msgKind: "warn" });
+      },
+      onBrowse: () => this.setState({ browseAnyway: true }),
+      showGate: !!(!this.authed && !s.browseAnyway && s.source !== "offline" && (s.identityReady || s.passwordConfigured)),
+      gateNote: "העריכה שמורה לעורכים מאושרים. אחרי התחברות כל שמירה מתעדכנת במשחק עצמו.",
+      showPassBox: !!s.passwordConfigured,
+      passInput: s.passInput,
+      onPassInput: (e) => this.setState({ passInput: e.target.value }),
+      onPassKey: (e) => { if (e.key === "Enter") this.tryPassword(); },
+      passLabel: s.passChecking ? "בודק…" : "כניסה עם סיסמה",
+      onPassSubmit: () => this.tryPassword(),
+      showIdentityBtn: !!s.identityReady,
+
+      saveLabel: s.saving ? "שומר…" : "שמירה לענן",
+      saveStyle: "display:flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;font-size:15px;font-weight:800;color:#fff;border:none;border-radius:12px;box-shadow:0 12px 26px rgba(0,56,184,.24);" +
+        (s.saving || !s.dirty ? "background:#8FA0BE;cursor:default" : "background:#0038B8;cursor:pointer"),
+      onSave: () => { if (!s.saving && s.dirty) this.save(); },
+
+      msg: s.msg,
+      msgStyle: "display:flex;align-items:center;gap:10px;padding:13px 15px;border-radius:14px;background:" + msgTone[0] + ";color:" + msgTone[1],
+      onClearMsg: () => this.setState({ msg: "" }),
+
+      splitStyle: narrow
+        ? "display:flex;flex-direction:column;gap:14px"
+        : "display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:16px;align-items:start",
+      panelStyle: "min-width:0;box-sizing:border-box;background:var(--card);border-radius:20px;padding:18px;box-shadow:0 14px 40px rgba(0,56,184,.09);display:flex;flex-direction:column;gap:14px;" +
+        (narrow ? "" : "position:sticky;top:20px;max-height:calc(100vh - 44px);overflow:auto"),
+
+      tracks: TRACKS.map((tr) => ({
+        label: tr.label, style: chip(tr.key === s.track),
+        onClick: () => this.setState({ track: tr.key, level: 0, eraIdx: 0, selected: 0, draft: null, isNew: false })
+      })),
+      levels: LEVELS.map((l, i) => {
+        const tiers = t.nested ? (c && c[t.keys[i]]) || [] : null;
+        const n = t.nested ? ((tiers[s.eraIdx] || []).length) : (((c && c[t.keys[i]]) || []).length);
+        return { label: l, count: n, style: chip(i === s.level), onClick: () => this.setState({ level: i, selected: 0, draft: null, isNew: false }) };
+      }),
+      isEra: !!t.nested,
+      eraIdx: s.eraIdx,
+      eraOptions: ((c && c.PERIODS) || []).map((p, i) => ({ value: i, label: p.years + " · " + p.title })),
+      onEraIdx: (e) => this.setState({ eraIdx: Number(e.target.value), selected: 0, draft: null, isNew: false }),
+
+      search: s.search,
+      onSearch: (e) => this.setState({ search: e.target.value }),
+      countLabel: rows.length + " שאלות · " + t.label + " · " + LEVELS[s.level],
+      onNewQuestion: () => this.setState({
+        isNew: true,
+        draft: { id: "", q: "", a: ["", "", "", ""], c: 0, e: "", h: "", verified: false, source: null }
+      }),
+
+      noRows: rows.length === 0,
+      rows: rows.map((x) => ({
+        n: x.i + 1, id: x.it.id || "", q: x.it.q || "", correct: (x.it.a || [])[x.it.c] || "—",
+        badge: x.it.verified ? "אומת" : "ממתין",
+        badgeStyle: badgeStyle(!!x.it.verified),
+        idStyle: "display:block;margin-top:3px;font-size:12px;font-weight:600;color:#8FA0BE;direction:ltr;text-align:right",
+        style: "box-sizing:border-box;padding:12px 14px;border-radius:14px;box-shadow:0 8px 24px rgba(0,56,184,.06);" +
+          (x.i === s.selected && !s.isNew ? "background:#E4EDFC" : "background:#fff"),
+        iconBtn: "flex:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#46577A;background:#F2F6FD;border:none;border-radius:10px;cursor:pointer",
+        editBtn: "flex:none;min-height:34px;padding:0 14px;font-size:13px;font-weight:800;color:#0038B8;background:#E4EDFC;border:none;border-radius:10px;cursor:pointer",
+        onEdit: () => this.setState({ selected: x.i, isNew: false, draft: null }),
+        onUp: () => this._move(x.i, -1),
+        onDown: () => this._move(x.i, 1)
+      })),
+
+      hasDraft: !!(batch.length || s.isNew),
+      editorEyebrow: s.isNew ? "הוספה" : "עריכה",
+      editorTitle: s.isNew ? "שאלה חדשה" : "עריכת שאלה " + (s.selected + 1),
+      editorId: s.isNew ? "מזהה חדש" : (d.id || "—"),
+      draftQ: d.q || "", draftE: d.e || "", draftH: d.h || "", draftSrc: d.source || "",
+      onDraftQ: (e) => this._setDraft({ q: e.target.value }),
+      onDraftE: (e) => this._setDraft({ e: e.target.value }),
+      onDraftH: (e) => this._setDraft({ h: e.target.value }),
+      onDraftSrc: (e) => this._setDraft({ source: e.target.value }),
+      answers: (d.a || ["", "", "", ""]).map((txt, i) => ({
+        text: txt, ph: "תשובה " + LETTERS[i], mark: i === d.c ? "✓" : LETTERS[i],
+        rowStyle: "display:flex;align-items:center;gap:10px;padding:0 12px;min-height:52px;border-radius:13px;" + (i === d.c ? "background:#E3F6E9" : "background:#F2F6FD"),
+        pickStyle: "flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;border-radius:9px;cursor:pointer;border:none;" +
+          (i === d.c ? "background:#157F3D;color:#fff" : "background:#fff;color:#8FA0BE"),
+        onPick: () => this._setDraft({ c: i }),
+        onText: (e) => { const a = (d.a || []).slice(); a[i] = e.target.value; this._setDraft({ a: a }); }
+      })),
+      verifyMark: d.verified ? "✓" : "",
+      verifyStyle: verifyBtn(!!d.verified),
+      verifyBoxStyle: verifyBox(!!d.verified),
+      verifyTitle: d.verified ? "אומת מול מקור" : "ממתין לאימות",
+      verifyNote: d.verified ? "השאלה נבדקה ואושרה" : "כדאי למלא מקור ואז לסמן",
+      onToggleVerified: () => this._setDraft({ verified: !d.verified }),
+      saveDraftLabel: s.isNew ? "להוסיף לרשימה" : "לעדכן את השאלה",
+      onSaveDraft: () => {
+        const list = batch.slice();
+        if (s.isNew) {
+          const prefix = (list[0] && list[0].id ? String(list[0].id).replace(/-\d+$/, "") : t.key) + "-";
+          const item = Object.assign({}, d, { id: d.id || prefix + String(list.length + 1).padStart(2, "0") });
+          list.push(item);
+          this.patch(this.batchPath, list);
+          this.setState({ draft: null, isNew: false, selected: list.length - 1, msg: "השאלה נוספה. השינוי ייכנס למשחק אחרי שמירה לענן.", msgKind: "info" });
+        } else {
+          list[s.selected] = d;
+          this.patch(this.batchPath, list);
+          this.setState({ draft: null });
+        }
+      },
+      onCancelDraft: () => this.setState({ draft: null, isNew: false }),
+      deleteStyle: "min-height:48px;padding:0 15px;font-size:14px;font-weight:700;color:#C2312B;background:#FCE8E8;border:none;border-radius:12px;" + (s.isNew ? "opacity:.45;cursor:default" : "cursor:pointer"),
+      onDeleteDraft: () => {
+        if (s.isNew) return;
+        const list = batch.slice();
+        list.splice(s.selected, 1);
+        this.patch(this.batchPath, list);
+        this.setState({ draft: null, selected: Math.max(0, s.selected - 1) });
+      },
+
+      hintTabs: LEVELS.map((l, i) => ({ label: l, style: chip(i === s.hintLevel), onClick: () => this.setState({ hintLevel: i }) })),
+      hintCountLabel: hintList.filter((x) => x && String(x).trim()).length + " מתוך " + hintRowCount + " רמזים מלאים",
+      hintRows: Array.from({ length: hintRowCount }).map((_, i) => ({
+        n: i + 1,
+        q: (hintQs[i] && hintQs[i].q) || "אין שאלה במקום הזה",
+        text: hintList[i] || "",
+        onInput: (e) => {
+          const arr = hintList.slice();
+          while (arr.length <= i) arr.push("");
+          arr[i] = e.target.value;
+          this.patch(["HINTS", hintKey], arr);
+        }
+      })),
+
+      regionList: ((c && c.REGIONS) || []).map((r, i) => ({
+        title: r.title, where: r.where, badge: r.verified ? "אומת" : "ממתין",
+        badgeStyle: badgeStyle(!!r.verified), style: listBtn(i === s.regionIdx),
+        onClick: () => this.setState({ regionIdx: i })
+      })),
+      regionTitle: region.title || "אזור",
+      regionFields: regionFields,
+      regionVerifyMark: region.verified ? "✓" : "",
+      regionVerifyStyle: verifyBtn(!!region.verified),
+      regionVerifyBoxStyle: verifyBox(!!region.verified),
+      regionVerifyTitle: region.verified ? "אומת מול מקור" : "ממתין לאימות",
+      onToggleRegionVerified: () => this.patch(["REGIONS", s.regionIdx, "verified"], !region.verified),
+
+      periodList: ((c && c.PERIODS) || []).map((p, i) => ({
+        years: p.years, title: p.title, badge: p.verified ? "אומת" : "ממתין",
+        badgeStyle: badgeStyle(!!p.verified), style: listBtn(i === s.periodIdx),
+        onClick: () => this.setState({ periodIdx: i })
+      })),
+      periodTitle: period.title || "תקופה",
+      periodFields: periodFields,
+      periodVerifyMark: period.verified ? "✓" : "",
+      periodVerifyStyle: verifyBtn(!!period.verified),
+      periodVerifyBoxStyle: verifyBox(!!period.verified),
+      periodVerifyTitle: period.verified ? "אומת מול מקור" : "ממתין לאימות",
+      onTogglePeriodVerified: () => this.patch(["PERIODS", s.periodIdx, "verified"], !period.verified),
+
+      praiseGroups: PRAISE_GROUPS.map((g) => ({
+        label: g.label, note: g.note,
+        items: ((c && c[g.key]) || []).map((txt, i) => ({
+          text: txt,
+          onInput: (e) => {
+            const arr = ((c && c[g.key]) || []).slice();
+            arr[i] = e.target.value;
+            this.patch([g.key], arr);
+          }
+        }))
+      })),
+
+      coinFields: [
+        { key: "first", label: "תשובה נכונה בניסיון ראשון", note: "מטבעות", step: 1 },
+        { key: "second", label: "נכונה בניסיון שני", note: "מטבעות", step: 1 },
+        { key: "hintCost", label: "עלות רמז", note: "יורד מהניקוד", step: 0.5 }
+      ].map((f) => ({
+        label: f.label, note: f.note, value: set[f.key], stepStyle: STEP,
+        onMinus: () => this.setSetting(f.key, Math.max(0, Math.round((set[f.key] - f.step) * 100) / 100)),
+        onPlus: () => this.setSetting(f.key, Math.round((set[f.key] + f.step) * 100) / 100)
+      })),
+      maxScore: set.questionCount * set.first + " מטבעות",
+      stepStyle: STEP,
+      qCount: set.questionCount,
+      onCountMinus: () => this.setSetting("questionCount", Math.max(5, set.questionCount - 5)),
+      onCountPlus: () => this.setSetting("questionCount", Math.min(60, set.questionCount + 5)),
+      toggles: [
+        { key: "secondTry", label: "ניסיון שני לתשובה", note: "אחרי טעות ראשונה השאלה נשארת פתוחה" },
+        { key: "liveScore", label: "הצגת ניקוד בזמן משחק", note: "מונה המטבעות בראש המסך" },
+        { key: "praise", label: "הודעת עידוד על רצף", note: "שלוש נכונות ברצף בניסיון ראשון" }
+      ].map((tg) => {
+        const on = set[tg.key] !== false;
+        return {
+          label: tg.label, note: tg.note,
+          trackStyle: "flex:none;width:52px;height:30px;border-radius:999px;padding:3px;box-sizing:border-box;display:flex;justify-content:" + (on ? "flex-start" : "flex-end") + ";background:" + (on ? "#0038B8" : "#CBD9F2"),
+          knobStyle: "display:block;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(16,32,61,.2)",
+          onClick: () => this.setSetting(tg.key, !on)
+        };
+      }),
+      bands: ["מצטיין", "טוב מאוד", "טוב"].map((label, i) => ({
+        label: label, color: ["#157F3D", "#0038B8", "#5B8FEE"][i],
+        from: set.bands[i],
+        inputStyle: "width:66px;box-sizing:border-box;min-height:42px;padding:0 10px;text-align:center;font-size:15px;font-weight:800;color:#0038B8;background:#fff;border:none;border-radius:11px;outline:none",
+        onFrom: (e) => {
+          const b = set.bands.slice();
+          b[i] = Number(String(e.target.value).replace(/[^0-9]/g, "") || 0);
+          this.setSetting("bands", b);
+        }
+      })),
+
+      orderModes: modeDefs.map((m) => {
+        const on = m.key === set.orderMode;
+        return {
+          label: m.label, note: m.note,
+          style: "display:flex;align-items:flex-start;gap:12px;width:100%;box-sizing:border-box;padding:15px 14px;border:none;border-radius:14px;cursor:pointer;text-align:right;" + (on ? "background:#E4EDFC" : "background:#F2F6FD"),
+          dotStyle: "flex:none;margin-top:3px;width:20px;height:20px;border-radius:50%;box-sizing:border-box;border:6px solid " + (on ? "#0038B8" : "#fff") + ";background:#fff;box-shadow:inset 0 0 0 2px " + (on ? "#0038B8" : "#CBD9F2"),
+          onClick: () => this.setSetting("orderMode", m.key)
+        };
+      }),
+
+      verifyStats: [
+        { label: "שאלות במאגר", value: totals.q, color: "#0038B8" },
+        { label: "שאלות שאומתו", value: totals.v, color: "#157F3D" },
+        { label: "פריטים ממתינים · כולל אזורים ותקופות", value: pending.length, color: "#C9A227" },
+        { label: "אחוז השאלות שאומתו", value: totals.q ? Math.round((totals.v / totals.q) * 100) + "%" : "—", color: "#5B8FEE" }
+      ],
+      allVerified: pending.length === 0,
+      verifyListNote: pending.length > 40 ? "מוצגים 40 הראשונים מתוך " + pending.length : pending.length + " פריטים",
+      verifyRows: pending.slice(0, 40).map((v) => ({ kind: v.kind, text: v.text, onGo: v.go })),
+
+      revLabel: cloud
+        ? "גרסה " + s.revision + (s.updatedBy ? " · עודכן על ידי " + s.updatedBy : "")
+        : "לא נשמר לענן בפעם הזאת",
+      onExport: () => this.exportJson()
+    };
+  }
+}
+</script>
+</body>
+</html>
